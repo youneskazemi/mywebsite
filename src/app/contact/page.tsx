@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { FaPaperPlane } from 'react-icons/fa';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaPaperPlane, FaRobot } from 'react-icons/fa';
 
 const Contact: React.FC = () => {
   const [formState, setFormState] = useState({
@@ -22,16 +22,14 @@ const Contact: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    // Here you would typically send the form data to your backend
-    // For this example, we'll simulate an API call
     await new Promise(resolve => setTimeout(resolve, 2000));
-    setSubmitMessage('Thank you for your message! I\'ll get back to you soon.');
+    setSubmitMessage('Thank you for your message! My AI assistant will process it and I\'ll get back to you soon.');
     setFormState({ name: '', email: '', message: '' });
     setIsSubmitting(false);
   };
 
   return (
-    <div className="min-h-screen bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text">
+    <div className="min-h-screen bg-gradient-to-br from-light-background to-light-secondary dark:from-dark-background dark:to-dark-secondary text-light-text dark:text-dark-text">
       <main className="container mx-auto px-4 py-16">
         <motion.section
           initial={{ opacity: 0, y: 20 }}
@@ -39,10 +37,10 @@ const Contact: React.FC = () => {
           transition={{ duration: 0.5 }}
           className="max-w-2xl mx-auto text-center"
         >
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-light-primary dark:text-dark-primary">Contact Me</h1>
-          <p className="text-xl mb-8 text-light-accent dark:text-dark-accent">I'd love to hear from you! Please fill out the form below.</p>
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gradient">Contact the AI Universe</h1>
+          <p className="text-xl mb-8 text-light-accent dark:text-dark-accent">Ready to discuss the future of AI? Drop me a message!</p>
           
-          <form onSubmit={handleSubmit} className="bg-light-secondary dark:bg-dark-secondary p-8 rounded-lg shadow-lg">
+          <form onSubmit={handleSubmit} className="bg-light-secondary dark:bg-dark-secondary p-8 rounded-lg shadow-lg border border-light-accent dark:border-dark-accent">
             <div className="mb-6">
               <label htmlFor="name" className="block text-sm font-medium mb-2">Name</label>
               <input
@@ -52,7 +50,8 @@ const Contact: React.FC = () => {
                 value={formState.name}
                 onChange={handleInputChange}
                 required
-                className="w-full px-3 py-2 bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text rounded border border-light-border dark:border-dark-border focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary"
+                className="w-full px-3 py-2 bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text rounded border border-light-border dark:border-dark-border focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary transition-all duration-300"
+                placeholder="Enter your name"
               />
             </div>
             <div className="mb-6">
@@ -64,7 +63,8 @@ const Contact: React.FC = () => {
                 value={formState.email}
                 onChange={handleInputChange}
                 required
-                className="w-full px-3 py-2 bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text rounded border border-light-border dark:border-dark-border focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary"
+                className="w-full px-3 py-2 bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text rounded border border-light-border dark:border-dark-border focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary transition-all duration-300"
+                placeholder="Enter your email"
               />
             </div>
             <div className="mb-6">
@@ -76,7 +76,8 @@ const Contact: React.FC = () => {
                 onChange={handleInputChange}
                 required
                 rows={5}
-                className="w-full px-3 py-2 bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text rounded border border-light-border dark:border-dark-border focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary"
+                className="w-full px-3 py-2 bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text rounded border border-light-border dark:border-dark-border focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary transition-all duration-300"
+                placeholder="Your message here..."
               ></textarea>
             </div>
             <motion.button
@@ -95,15 +96,19 @@ const Contact: React.FC = () => {
             </motion.button>
           </form>
           
-          {submitMessage && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mt-6 p-4 bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-100 rounded-lg"
-            >
-              {submitMessage}
-            </motion.div>
-          )}
+          <AnimatePresence>
+            {submitMessage && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="mt-6 p-4 bg-light-accent dark:bg-dark-accent text-light-background dark:text-dark-background rounded-lg flex items-center justify-center"
+              >
+                <FaRobot className="mr-2 text-2xl animate-bounce" />
+                <p>{submitMessage}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.section>
       </main>
     </div>
