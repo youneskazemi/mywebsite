@@ -3,8 +3,8 @@ import { ThemeProvider } from 'next-themes';
 import { ReactNode } from 'react';
 
 export const metadata = {
-  title: 'My Portfolio',
-  description: 'My awesome portfolio',
+  title: 'Younes Kazemi\'s Portfolio',
+  description: 'The personal portfolio of Younes Kazemi, an AI enthusiast and web developer.',
 };
 
 const RootLayout = ({ children }: { children: ReactNode }) => {

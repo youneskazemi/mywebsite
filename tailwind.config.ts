@@ -18,13 +18,26 @@ const config: Config = {
           text: "#a0aec0",
         },
       },
-      backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-      },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['Fira Code', 'monospace'],
+      },
+      animation: {
+        typing: 'typing 3.5s steps(40, end), blink-caret .75s step-end infinite',
+        glow: 'glow 1.5s ease-in-out infinite alternate',
+      },
+      keyframes: {
+        typing: {
+          'from': { width: '0' },
+          'to': { width: '100%' },
+        },
+        'blink-caret': {
+          'from, to': { 'border-color': 'transparent' },
+          '50%': { 'border-color': '#00ff00' },
+        },
+        glow: {
+          '0%': { boxShadow: '0 0 5px rgba(0, 255, 0, 0.5)' },
+          '100%': { boxShadow: '0 0 20px rgba(0, 255, 0, 1)' },
+        },
       },
     },
   },

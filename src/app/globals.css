@@ -23,3 +23,10 @@ p,
 a {
   @apply font-sans;
 }
+
+code {
+  background: rgba(0, 0, 0, 0.8);
+  color: #00ff00;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+}
