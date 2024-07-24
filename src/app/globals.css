@@ -2,31 +2,51 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&display=swap');
+@layer base {
+  body {
+    @apply bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text;
+    font-family: 'Fira Code', monospace;
+  }
 
-body {
-  @apply bg-light-background text-light-text transition-colors duration-300;
-  font-family: 'Fira Code', monospace;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply text-light-primary dark:text-dark-primary;
+  }
+
+  a {
+    @apply text-light-accent dark:text-dark-accent transition-colors duration-200;
+  }
+
+  a:hover {
+    @apply text-light-primary dark:text-dark-primary;
+  }
 }
 
-[data-theme='dark'] {
-  @apply bg-dark-background text-dark-text;
+@layer components {
+  .btn {
+    @apply px-4 py-2 rounded-full font-semibold text-light-background dark:text-dark-background bg-light-primary dark:bg-dark-primary hover:bg-light-accent dark:hover:bg-dark-accent transition-colors duration-200;
+  }
+
+  .btn-outline {
+    @apply px-4 py-2 rounded-full font-semibold text-light-primary dark:text-dark-primary border border-light-primary dark:border-dark-primary hover:bg-light-primary hover:text-light-background dark:hover:bg-dark-primary dark:hover:text-dark-background transition-colors duration-200;
+  }
+
+  .card {
+    @apply bg-light-background dark:bg-dark-background rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 border border-light-border dark:border-dark-border;
+  }
+
+  .input {
+    @apply w-full px-3 py-2 bg-light-background dark:bg-dark-background border border-light-border dark:border-dark-border rounded-md focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary;
+  }
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-p,
-a {
-  @apply font-sans;
-}
-
-code {
-  background: rgba(0, 0, 0, 0.8);
-  color: #00ff00;
-  padding: 0.2rem 0.4rem;
-  border-radius: 4px;
+@layer utilities {
+  .animate-typing {
+    @apply overflow-hidden border-r-2 border-light-primary dark:border-dark-primary whitespace-nowrap;
+    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+  }
 }
