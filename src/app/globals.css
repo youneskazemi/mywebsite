@@ -1,11 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Source+Sans+Pro:wght@400;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   body {
-    @apply bg-gradient-to-br from-light-background to-light-secondary dark:from-dark-background dark:to-dark-secondary text-light-text dark:text-dark-text;
-    font-family: 'Fira Code', monospace;
+    @apply bg-light-bg dark:bg-dark-bg text-light-text dark:text-dark-text;
+    font-family: 'Source Sans Pro', sans-serif;
   }
 
   h1,
@@ -14,7 +16,7 @@
   h4,
   h5,
   h6 {
-    @apply text-light-primary dark:text-dark-primary;
+    @apply font-code font-bold text-light-accent dark:text-dark-accent;
   }
 
   a {
@@ -33,72 +35,85 @@
 
 @layer components {
   .btn {
-    @apply px-4 py-2 rounded-full font-semibold text-light-background dark:text-dark-background bg-light-primary dark:bg-dark-primary hover:bg-light-accent dark:hover:bg-dark-accent transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1;
+    @apply px-4 py-2 rounded-md font-code text-light-bg dark:text-dark-bg bg-light-accent dark:bg-dark-accent hover:bg-opacity-80 transition-all duration-300 shadow-md hover:shadow-lg;
   }
 
   .btn-outline {
-    @apply px-4 py-2 rounded-full font-semibold text-light-primary dark:text-dark-primary border-2 border-light-primary dark:border-dark-primary hover:bg-light-primary hover:text-light-background dark:hover:bg-dark-primary dark:hover:text-dark-background transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1;
+    @apply px-4 py-2 rounded-md font-code text-light-accent dark:text-dark-accent border-2 border-light-accent dark:border-dark-accent hover:bg-light-accent dark:hover:bg-dark-accent hover:text-light-bg dark:hover:text-dark-bg transition-all duration-300;
   }
 
   .card {
-    @apply bg-light-background dark:bg-dark-background rounded-lg shadow-md hover:shadow-xl transition-all duration-300 border border-light-border dark:border-dark-border overflow-hidden;
+    @apply bg-light-secondary dark:bg-dark-secondary rounded-md shadow-md hover:shadow-lg transition-all duration-300 border border-light-border dark:border-dark-border overflow-hidden;
   }
 
   .input {
-    @apply w-full px-3 py-2 bg-light-background dark:bg-dark-background border-2 border-light-border dark:border-dark-border rounded-md focus:outline-none focus:ring-2 focus:ring-light-primary dark:focus:ring-dark-primary transition-all duration-300;
+    @apply w-full px-3 py-2 bg-light-bg dark:bg-dark-bg border-2 border-light-border dark:border-dark-border rounded-md focus:outline-none focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent transition-all duration-300 text-light-text dark:text-dark-text;
   }
 }
 
 @layer utilities {
-  .animate-typing {
-    @apply overflow-hidden border-r-2 border-light-primary dark:border-dark-primary whitespace-nowrap;
-    animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+  .code-block {
+    @apply font-code bg-light-secondary dark:bg-dark-secondary p-4 rounded-md overflow-x-auto;
   }
 
-  .animate-float {
-    animation: float 3s ease-in-out infinite;
+  .code-line {
+    @apply block;
   }
 
-  .animate-pulse-glow {
-    animation: pulse-glow 2s ease-in-out infinite;
+  .code-comment {
+    @apply text-code-comment;
+  }
+
+  .code-keyword {
+    @apply text-code-keyword;
+  }
+
+  .code-function {
+    @apply text-code-function;
+  }
+
+  .code-string {
+    @apply text-code-string;
+  }
+
+  .code-number {
+    @apply text-code-number;
+  }
+
+  .code-operator {
+    @apply text-code-operator;
+  }
+
+  .code-class {
+    @apply text-code-class;
+  }
+
+  .code-variable {
+    @apply text-code-variable;
+  }
+
+  .animate-cursor {
+    @apply relative;
+  }
+
+  .animate-cursor::after {
+    content: '|';
+    @apply absolute top-0 right-0 -mr-2 text-light-accent dark:text-dark-accent animate-pulse;
   }
 
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-light-primary to-light-accent dark:from-dark-primary dark:to-dark-accent;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-light-accent to-code-function dark:from-dark-accent dark:to-code-function;
   }
 
-  .bg-matrix {
-    background-image:
-      linear-gradient(rgba(0, 255, 0, 0.03) 2px, transparent 2px),
-      linear-gradient(90deg, rgba(0, 255, 0, 0.03) 2px, transparent 2px);
-    background-size: 50px 50px;
-  }
-}
-
-@keyframes float {
-  0% {
-    transform: translateY(0px);
+  .hover-lift {
+    @apply transition-transform duration-300 hover:-translate-y-1;
   }
 
-  50% {
-    transform: translateY(-10px);
+  .glass-effect {
+    @apply bg-opacity-20 backdrop-filter backdrop-blur-lg;
   }
 
-  100% {
-    transform: translateY(0px);
-  }
-}
-
-@keyframes pulse-glow {
-  0% {
-    box-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
-  }
-
-  50% {
-    box-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
-  }
-
-  100% {
-    box-shadow: 0 0 5px rgba(0, 255, 0, 0.5);
+  .text-shadow {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
   }
 }
