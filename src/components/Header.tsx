@@ -1,117 +1,129 @@
 "use client"
 
-import React, { useEffect, useState } from 'react';
-import { useTheme } from 'next-themes';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { motion, AnimatePresence } from 'framer-motion';
-import { FaMoon, FaSun, FaBars, FaTimes, FaRobot } from 'react-icons/fa';
+import { usePathname } from 'next/navigation';
+import { motion } from 'framer-motion';
+import { FaRobot, FaHome, FaProjectDiagram, FaUser, FaEnvelope, FaBars, FaTimes } from 'react-icons/fa';
 
-const Header: React.FC = () => {
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
+interface HeaderProps {
+  className?: string;
+}
 
-  useEffect(() => setMounted(true), []);
+const Header: React.FC<HeaderProps> = ({ className = '' }) => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const pathname = usePathname();
 
-  if (!mounted) return null;
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const navItems = [
-    { name: 'Home', path: '/' },
-    { name: 'Portfolio', path: '/portfolio' },
-    { name: 'About', path: '/about' },
-    { name: 'Contact', path: '/contact' },
+    { name: 'Home', path: '/', icon: FaHome },
+    { name: 'Portfolio', path: '/portfolio', icon: FaProjectDiagram },
+    { name: 'About', path: '/about', icon: FaUser },
+    { name: 'Contact', path: '/contact', icon: FaEnvelope },
   ];
 
-  const variants = {
-    open: { opacity: 1, height: 'auto', transition: { staggerChildren: 0.07, delayChildren: 0.2 } },
-    closed: { opacity: 0, height: 0, transition: { staggerChildren: 0.05, staggerDirection: -1 } },
-  }
-
-  const itemVariants = {
-    open: { y: 0, opacity: 1 },
-    closed: { y: -20, opacity: 0 }
-  };
-
   return (
-    <header className="bg-gray-900 text-white">
-      <div className="container mx-auto px-4 py-6">
-        <div className="flex justify-between items-center">
-          <Link href="/" passHref legacyBehavior>
-            <motion.a
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className="text-3xl font-bold flex items-center"
+    <header className={`top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      isScrolled ? 'bg-black bg-opacity-50' : 'bg-transparent'
+    } backdrop-filter backdrop-blur-lg ${className}`}>
+      <div className="container mx-auto px-4">
+        <div className="flex justify-between items-center py-4">
+          <Link href="/" className="flex items-center space-x-2">
+            <motion.div
+              animate={{
+                rotate: [0, 360],
+                scale: [1, 1.2, 1],
+              }}
+              transition={{
+                duration: 5,
+                repeat: Infinity,
+                repeatType: "reverse",
+              }}
             >
-              <FaRobot className="mr-2 text-blue-400" />
-              <span className="bg-gradient-to-r from-blue-400 to-purple-500 text-transparent bg-clip-text">AI Universe</span>
-            </motion.a>
+              <FaRobot className="text-3xl text-green-400" />
+            </motion.div>
+            <span className="text-2xl font-bold bg-gradient-to-r from-green-400 to-blue-500 text-transparent bg-clip-text">
+              AI Universe
+            </span>
           </Link>
 
           <nav className="hidden md:flex space-x-4">
             {navItems.map((item) => (
-              <Link key={item.name} href={item.path} passHref legacyBehavior>
-                <motion.a
-                  whileHover={{ scale: 1.1, color: '#60a5fa' }}
-                  whileTap={{ scale: 0.9 }}
-                  className="relative overflow-hidden group"
+              <Link key={item.name} href={item.path}>
+                <motion.div
+                  className={`relative px-3 py-2 rounded-md transition-colors duration-300 ${
+                    pathname === item.path ? 'text-green-400' : 'text-gray-300 hover:text-green-400'
+                  }`}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
                 >
-                  {item.name}
-                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-blue-400 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></span>
-                </motion.a>
+                  <div className="flex items-center space-x-2">
+                    <item.icon />
+                    <span>{item.name}</span>
+                  </div>
+                  {pathname === item.path && (
+                    <motion.div
+                      className="absolute bottom-0 left-0 right-0 h-0.5 bg-green-400"
+                      layoutId="underline"
+                    />
+                  )}
+                </motion.div>
               </Link>
             ))}
           </nav>
 
-          <div className="flex items-center space-x-4">
-            <motion.button
-              whileHover={{ scale: 1.1, rotate: 180 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="p-2 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors duration-200"
-            >
-              {theme === 'dark' ? <FaSun className="text-yellow-400" /> : <FaMoon className="text-blue-400" />}
-            </motion.button>
-
+          <div className="md:hidden">
             <motion.button
               whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              className="md:hidden p-2 rounded-full bg-gray-800 hover:bg-gray-700 transition-colors duration-200"
-              onClick={() => setIsOpen(!isOpen)}
+              whileTap={{ scale: 0.95 }}
+              className="text-green-400"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
-              {isOpen ? <FaTimes /> : <FaBars />}
+              {isMobileMenuOpen ? <FaTimes /> : <FaBars />}
             </motion.button>
           </div>
         </div>
       </div>
 
-      <AnimatePresence>
-        {isOpen && (
-          <motion.nav
-            initial="closed"
-            animate="open"
-            exit="closed"
-            variants={variants}
-            className="md:hidden bg-gray-800 overflow-hidden"
-          >
-            <motion.div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
-              {navItems.map((item) => (
-                <motion.div key={item.name} variants={itemVariants}>
-                  <Link href={item.path} passHref legacyBehavior>
-                    <motion.a
-                      whileHover={{ scale: 1.05, x: 10, color: '#60a5fa' }}
-                      whileTap={{ scale: 0.95 }}
-                      className="block py-2 transition-colors duration-200"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      {item.name}
-                    </motion.a>
-                  </Link>
-                </motion.div>
-              ))}
-            </motion.div>
-          </motion.nav>
-        )}
-      </AnimatePresence>
+      {/* Mobile menu */}
+      {isMobileMenuOpen && (
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          className="md:hidden bg-black bg-opacity-90 backdrop-filter backdrop-blur-lg"
+        >
+          <div className="container mx-auto px-4 py-4">
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                href={item.path}
+                className={`block py-2 px-4 ${
+                  pathname === item.path ? 'text-green-400' : 'text-gray-300 hover:text-green-400'
+                }`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <div className="flex items-center space-x-2">
+                  <item.icon />
+                  <span>{item.name}</span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </motion.div>
+      )}
+
+      {/* Glowing line */}
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-green-400 via-blue-500 to-purple-600">
+      </div>
     </header>
   );
 };

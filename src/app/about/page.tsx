@@ -4,26 +4,29 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { FaJs, FaPython, FaReact, FaNodeJs, FaBrain, FaChartBar, FaRobot, FaEnvelope } from 'react-icons/fa';
+import { TypewriterText, MatrixRain, FloatingIcon } from '@/components/UIComponents';
 
 const SkillCard: React.FC<{ icon: React.ElementType; name: string; description: string }> = ({ icon: Icon, name, description }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <motion.div
-      className="bg-light-secondary dark:bg-dark-secondary p-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300"
+      className="bg-gray-900 p-4 rounded-lg shadow-md hover:shadow-lg transition-all duration-300 border border-green-500"
       whileHover={{ scale: 1.05 }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
     >
-      <Icon className="text-4xl mb-2 text-light-accent dark:text-dark-accent" />
-      <h3 className="text-lg font-semibold mb-2">{name}</h3>
+      <Icon className="text-4xl mb-2 text-green-400" />
+      <h3 className="text-lg font-semibold mb-2 text-green-300">
+        <TypewriterText text={name} speed={50} />
+      </h3>
       {isHovered && (
         <motion.p 
           initial={{ opacity: 0 }} 
           animate={{ opacity: 1 }} 
-          className="text-sm"
+          className="text-sm text-green-200"
         >
-          {description}
+          <TypewriterText text={description} speed={20} />
         </motion.p>
       )}
     </motion.div>
@@ -41,8 +44,9 @@ const About: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-light-background to-light-secondary dark:from-dark-background dark:to-dark-secondary text-light-text dark:text-dark-text">
-      <main className="container mx-auto px-4 py-16">
+    <div className="min-h-screen bg-black text-green-400 font-mono relative overflow-hidden">
+      <MatrixRain />
+      <main className="container mx-auto px-4 py-16 relative z-10">
         <section className="mb-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -55,15 +59,17 @@ const About: React.FC = () => {
               alt="Younes Kazemi"
               width={200}
               height={200}
-              className="rounded-full shadow-lg border-4 border-light-primary dark:border-dark-primary mb-8 md:mb-0 md:mr-8"
+              className="rounded-full shadow-lg border-4 border-green-500 mb-8 md:mb-0 md:mr-8"
             />
             <div className="text-center md:text-left">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gradient">Younes Kazemi</h1>
-              <p className="text-xl mb-4 text-light-accent dark:text-dark-accent">
-                AI Enthusiast | Web Developer | Problem Solver
+              <h1 className="text-4xl md:text-5xl font-bold mb-4 text-green-400">
+                <TypewriterText text="Younes Kazemi" />
+              </h1>
+              <p className="text-xl mb-4 text-green-300">
+                <TypewriterText text="AI Enthusiast | Web Developer | Problem Solver" speed={50} />
               </p>
-              <p className="max-w-lg">
-                Welcome to my AI Universe! I'm passionate about exploring the frontiers of artificial intelligence and creating innovative solutions that push the boundaries of what's possible.
+              <p className="max-w-lg text-green-200">
+                <TypewriterText text="Welcome to my AI Universe! I'm passionate about exploring the frontiers of artificial intelligence and creating innovative solutions that push the boundaries of what's possible." speed={20} />
               </p>
             </div>
           </motion.div>
@@ -75,7 +81,9 @@ const About: React.FC = () => {
           transition={{ delay: 0.2, duration: 0.5 }}
           className="mb-16"
         >
-          <h2 className="text-3xl font-bold mb-8 text-center text-light-primary dark:text-dark-primary">My AI Toolkit</h2>
+          <h2 className="text-3xl font-bold mb-8 text-center text-green-400">
+            <TypewriterText text="My AI Toolkit" />
+          </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
             {skills.map((skill) => (
               <SkillCard key={skill.name} icon={skill.icon} name={skill.name} description={skill.description} />
@@ -89,30 +97,32 @@ const About: React.FC = () => {
           transition={{ delay: 0.4, duration: 0.5 }}
           className="text-center"
         >
-          <h2 className="text-3xl font-bold mb-8 text-light-primary dark:text-dark-primary">Let's Connect</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">
-            I'm always excited to collaborate on innovative AI projects and explore new frontiers in technology. Whether you're a fellow enthusiast, a potential collaborator, or just curious about AI, I'd love to hear from you!
+          <h2 className="text-3xl font-bold mb-8 text-green-400">
+            <TypewriterText text="Let's Connect" />
+          </h2>
+          <p className="text-xl mb-8 max-w-2xl mx-auto text-green-300">
+            <TypewriterText text="I'm always excited to collaborate on innovative AI projects and explore new frontiers in technology. Whether you're a fellow enthusiast, a potential collaborator, or just curious about AI, I'd love to hear from you!" speed={30} />
           </p>
           <motion.a
             href="/contact"
-            whileHover={{ scale: 1.05 }}
+            whileHover={{ scale: 1.05, boxShadow: "0 0 15px rgba(0, 255, 255, 0.5)" }}
             whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center px-6 py-3 bg-light-primary dark:bg-dark-primary text-light-background dark:text-dark-background rounded-full hover:bg-light-accent dark:hover:bg-dark-accent transition duration-300"
+            className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-black rounded-full transition duration-300"
           >
             <FaEnvelope className="mr-2" />
             Get in Touch
           </motion.a>
         </motion.section>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6, duration: 0.5 }}
-          className="mt-16 text-center"
-        >
-          <FaRobot className="inline-block text-6xl text-light-accent dark:text-dark-accent animate-bounce" />
-        </motion.div>
       </main>
+      <div className="fixed inset-0 pointer-events-none">
+        {[...Array(10)].map((_, i) => (
+          <FloatingIcon
+            key={i}
+            icon={[FaRobot, FaBrain, FaChartBar][i % 3]}
+            delay={i * 0.5}
+          />
+        ))}
+      </div>
     </div>
   );
 };
