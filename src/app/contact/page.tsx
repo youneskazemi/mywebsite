@@ -24,7 +24,7 @@ const Contact: React.FC = () => {
     e.preventDefault();
     setIsSubmitting(true);
     await new Promise(resolve => setTimeout(resolve, 2000));
-    setSubmitMessage('Thank you for your message! My AI assistant will process it and I\'ll get back to you soon.');
+    setSubmitMessage("Thank you for your message! My AI assistant will process it and I'll get back to you soon.");
     setFormState({ name: '', email: '', message: '' });
     setIsSubmitting(false);
   };
@@ -40,12 +40,12 @@ const Contact: React.FC = () => {
           className="max-w-2xl mx-auto text-center"
         >
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-green-400">
-            <TypewriterText text="Contact the AI Universe" />
+            <TypewriterText text="Contact With Me" />
           </h1>
           <p className="text-xl mb-8 text-green-300">
             <TypewriterText text="Ready to discuss the future of AI? Drop me a message!" speed={30} />
           </p>
-          
+
           <form onSubmit={handleSubmit} className="bg-gray-900 p-8 rounded-lg shadow-lg border border-green-500">
             <div className="mb-6">
               <label htmlFor="name" className="block text-sm font-medium mb-2 text-green-300">Name</label>
@@ -101,7 +101,7 @@ const Contact: React.FC = () => {
               )}
             </motion.button>
           </form>
-          
+
           <AnimatePresence>
             {submitMessage && (
               <motion.div

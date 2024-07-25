@@ -54,13 +54,33 @@ const About: React.FC = () => {
             transition={{ duration: 0.5 }}
             className="flex flex-col md:flex-row items-center justify-center"
           >
-            <Image
-              src="/images/profile.png"
-              alt="Younes Kazemi"
-              width={200}
-              height={200}
-              className="rounded-full shadow-lg border-4 border-green-500 mb-8 md:mb-0 md:mr-8"
-            />
+            <motion.div
+              className="relative mb-8 md:mb-0 md:mr-8"
+              whileHover={{ scale: 1.1, rotate: 2 }}
+            >
+              <Image
+                src="/images/profile.png"
+                alt="Younes Kazemi"
+                width={200}
+                height={200}
+                className="rounded-full shadow-lg border-4 border-green-500"
+              />
+              <motion.div
+                className="absolute inset-0 rounded-full"
+                animate={{
+                  boxShadow: [
+                    "0 0 10px rgba(0, 255, 0, 0.5)",
+                    "0 0 20px rgba(0, 255, 0, 0.5)",
+                    "0 0 10px rgba(0, 255, 0, 0.5)"
+                  ]
+                }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                  repeatType: "mirror"
+                }}
+              />
+            </motion.div>
             <div className="text-center md:text-left">
               <h1 className="text-4xl md:text-5xl font-bold mb-4 text-green-400">
                 <TypewriterText text="Younes Kazemi" />
@@ -105,9 +125,9 @@ const About: React.FC = () => {
           </p>
           <motion.a
             href="/contact"
-            whileHover={{ scale: 1.05, boxShadow: "0 0 15px rgba(0, 255, 255, 0.5)" }}
+            whileHover={{ scale: 1.05, boxShadow: "0 0 15px rgba(0, 255, 0, 0.5)" }}
             whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 text-black rounded-full transition duration-300"
+            className="inline-flex items-center px-6 py-3 bg-green-600 text-black rounded-full hover:bg-green-700 transition duration-300"
           >
             <FaEnvelope className="mr-2" />
             Get in Touch

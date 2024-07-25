@@ -1,25 +1,20 @@
 // components/UIComponents.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { Typewriter } from 'react-simple-typewriter';
 
-export const TypewriterText: React.FC<{ text: string; speed?: number }> = ({ text, speed = 50 }) => {
-  const [displayText, setDisplayText] = useState('');
-
-  useEffect(() => {
-    let i = 0;
-    const typingInterval = setInterval(() => {
-      if (i < text.length) {
-        setDisplayText((prev) => prev + text.charAt(i));
-        i++;
-      } else {
-        clearInterval(typingInterval);
-      }
-    }, speed);
-
-    return () => clearInterval(typingInterval);
-  }, [text, speed]);
-
-  return <span>{displayText}</span>;
+export const TypewriterText: React.FC<{ text: string, speed?: number }> = ({ text, speed = 50}) => {
+  return (
+    <Typewriter
+      words={[text]}
+      loop={1} // Set to 0 for infinite loop
+      cursor
+      cursorStyle='_'
+      typeSpeed={speed}
+      deleteSpeed={50}
+      delaySpeed={1000}
+    />
+  );
 };
 
 export const MatrixRain: React.FC = () => {

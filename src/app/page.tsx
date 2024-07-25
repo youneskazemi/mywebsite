@@ -51,9 +51,9 @@ const Home: React.FC = () => {
           </Link>
           <Link href="/contact" passHref legacyBehavior>
             <motion.a
-              whileHover={{ scale: 1.05, boxShadow: "0 0 15px rgba(0, 255, 255, 0.5)" }}
+              whileHover={{ scale: 1.05, boxShadow: "0 0 15px rgba(0, 255, 0, 0.5)" }}
               whileTap={{ scale: 0.95 }}
-              className="btn flex items-center bg-blue-600 hover:bg-blue-700 text-black px-6 py-3 rounded-full transition duration-300"
+              className="btn flex items-center bg-green-600 hover:bg-green-700 text-black px-6 py-3 rounded-full transition duration-300"
             >
               <FaEnvelope className="mr-2" />
               Connect with Me

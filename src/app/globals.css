@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Source+Sans+Pro:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;700&family=Roboto+Mono:wght@400;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,8 +6,8 @@
 
 @layer base {
   body {
-    @apply bg-light-bg dark:bg-dark-bg text-light-text dark:text-dark-text;
-    font-family: 'Source Sans Pro', sans-serif;
+    @apply bg-matrix-bg text-matrix-text;
+    font-family: 'Roboto', sans-serif;
   }
 
   h1,
@@ -16,16 +16,16 @@
   h4,
   h5,
   h6 {
-    @apply font-code font-bold text-light-accent dark:text-dark-accent;
+    @apply font-header font-bold text-matrix-accent;
   }
 
   a {
-    @apply text-light-accent dark:text-dark-accent transition-all duration-300 relative;
+    @apply text-matrix-accent transition-all duration-300 relative;
   }
 
   a::after {
     content: '';
-    @apply absolute bottom-0 left-0 w-full h-0.5 bg-light-accent dark:bg-dark-accent transform scale-x-0 transition-transform duration-300 origin-bottom-right;
+    @apply absolute bottom-0 left-0 w-full h-0.5 bg-matrix-accent transform scale-x-0 transition-transform duration-300 origin-bottom-right;
   }
 
   a:hover::after {
@@ -35,25 +35,25 @@
 
 @layer components {
   .btn {
-    @apply px-4 py-2 rounded-md font-code text-light-bg dark:text-dark-bg bg-light-accent dark:bg-dark-accent hover:bg-opacity-80 transition-all duration-300 shadow-md hover:shadow-lg;
+    @apply px-4 py-2 rounded-md font-code text-matrix-bg bg-matrix-accent hover:bg-opacity-80 transition-all duration-300 shadow-md hover:shadow-lg;
   }
 
   .btn-outline {
-    @apply px-4 py-2 rounded-md font-code text-light-accent dark:text-dark-accent border-2 border-light-accent dark:border-dark-accent hover:bg-light-accent dark:hover:bg-dark-accent hover:text-light-bg dark:hover:text-dark-bg transition-all duration-300;
+    @apply px-4 py-2 rounded-md font-code text-matrix-accent border-2 border-matrix-accent hover:bg-matrix-accent hover:text-matrix-bg transition-all duration-300;
   }
 
   .card {
-    @apply bg-light-secondary dark:bg-dark-secondary rounded-md shadow-md hover:shadow-lg transition-all duration-300 border border-light-border dark:border-dark-border overflow-hidden;
+    @apply bg-matrix-secondary rounded-md shadow-md hover:shadow-lg transition-all duration-300 border border-matrix-border overflow-hidden;
   }
 
   .input {
-    @apply w-full px-3 py-2 bg-light-bg dark:bg-dark-bg border-2 border-light-border dark:border-dark-border rounded-md focus:outline-none focus:ring-2 focus:ring-light-accent dark:focus:ring-dark-accent transition-all duration-300 text-light-text dark:text-dark-text;
+    @apply w-full px-3 py-2 bg-matrix-bg border-2 border-matrix-border rounded-md focus:outline-none focus:ring-2 focus:ring-matrix-accent transition-all duration-300 text-matrix-text;
   }
 }
 
 @layer utilities {
   .code-block {
-    @apply font-code bg-light-secondary dark:bg-dark-secondary p-4 rounded-md overflow-x-auto;
+    @apply font-code bg-matrix-secondary p-4 rounded-md overflow-x-auto;
   }
 
   .code-line {
@@ -98,11 +98,11 @@
 
   .animate-cursor::after {
     content: '|';
-    @apply absolute top-0 right-0 -mr-2 text-light-accent dark:text-dark-accent animate-pulse;
+    @apply absolute top-0 right-0 -mr-2 text-matrix-accent animate-pulse;
   }
 
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-light-accent to-code-function dark:from-dark-accent dark:to-code-function;
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-matrix-accent to-code-function;
   }
 
   .hover-lift {

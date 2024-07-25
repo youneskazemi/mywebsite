@@ -10,37 +10,31 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        light: {
-          bg: "#F0F4F8",
-          text: "#1A202C",
-          accent: "#3B82F6",
-          secondary: "#E2E8F0",
-          border: "#CBD5E0",
-        },
-        dark: {
-          bg: "#1A202C",
-          text: "#F7FAFC",
-          accent: "#60A5FA",
-          secondary: "#2D3748",
-          border: "#4A5568",
+        matrix: {
+          bg: "#000000",
+          text: "#00FF00",
+          accent: "#00FF00",
+          secondary: "#003300",
+          border: "#005500",
         },
         code: {
-          comment: "#718096",
-          keyword: "#4299E1",
-          function: "#48BB78",
-          string: "#ED8936",
-          number: "#9F7AEA",
-          operator: "#A0AEC0",
-          class: "#38B2AC",
-          variable: "#F687B3",
+          comment: "#008800",
+          keyword: "#00FF00",
+          function: "#00AA00",
+          string: "#00CC00",
+          number: "#00EE00",
+          operator: "#00BB00",
+          class: "#009900",
+          variable: "#00DD00",
         },
       },
       fontFamily: {
-        code: ['"JetBrains Mono"', 'monospace'],
-        sans: ['"Source Sans Pro"', 'sans-serif'],
+        code: ['"Roboto Mono"', 'monospace'],
+        sans: ['"Roboto"', 'sans-serif'],
+        header: ['"Orbitron"', 'sans-serif'],
       },
       boxShadow: {
-        'neon-glow': '0 0 5px theme("colors.dark.accent"), 0 0 20px theme("colors.dark.accent")',
+        'neon-glow': '0 0 5px theme("colors.matrix.accent"), 0 0 20px theme("colors.matrix.accent")',
       },
     },
   },
@@ -49,7 +43,7 @@ const config: Config = {
     plugin(function({ addUtilities }) {
       const newUtilities = {
         '.text-shadow-glow': {
-          textShadow: '0 0 5px rgba(96, 165, 250, 0.7), 0 0 10px rgba(96, 165, 250, 0.5)',
+          textShadow: '0 0 5px rgba(0, 255, 0, 0.7), 0 0 10px rgba(0, 255, 0, 0.5)',
         },
       }
       addUtilities(newUtilities)
