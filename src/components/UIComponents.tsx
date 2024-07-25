@@ -3,12 +3,12 @@ import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Typewriter } from 'react-simple-typewriter';
 
-export const TypewriterText: React.FC<{ text: string, speed?: number }> = ({ text, speed = 50}) => {
+export const TypewriterText: React.FC<{ text: string, speed?: number, cursor?: boolean }> = ({ text, speed = 50, cursor=true}) => {
   return (
     <Typewriter
       words={[text]}
       loop={1} // Set to 0 for infinite loop
-      cursor
+      cursor={cursor}
       cursorStyle='_'
       typeSpeed={speed}
       deleteSpeed={50}

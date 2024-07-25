@@ -1,7 +1,9 @@
 "use client"
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaFolder, FaFolderOpen, FaGithub, FaExternalLinkAlt, FaTerminal, FaCode, FaBrain } from 'react-icons/fa';
+import { MatrixRain, TypewriterText } from '@/components/UIComponents';
+import Image from 'next/image';
 
 const projects = [
   {
@@ -11,7 +13,8 @@ const projects = [
     category: 'AI',
     github: 'https://github.com/yourusername/neural-network-visualizer',
     live: 'https://neural-network-viz.demo',
-    techStack: ['React', 'Three.js', 'TensorFlow.js']
+    techStack: ['React', 'Three.js', 'TensorFlow.js'],
+    image: '/images/project1.jpg' // Add image path
   },
   {
     id: 2,
@@ -19,7 +22,8 @@ const projects = [
     description: 'Simulation platform for quantum computing algorithms',
     category: 'Quantum Computing',
     github: 'https://github.com/yourusername/quantum-sim',
-    techStack: ['Python', 'Qiskit', 'NumPy']
+    techStack: ['Python', 'Qiskit', 'NumPy'],
+    image: '/images/project2.jpg' // Add image path
   },
   {
     id: 3,
@@ -28,90 +32,13 @@ const projects = [
     category: 'AI',
     github: 'https://github.com/yourusername/ai-refactor',
     live: 'https://ai-refactor.demo',
-    techStack: ['Python', 'TensorFlow', 'NLTK']
+    techStack: ['Python', 'TensorFlow', 'NLTK'],
+    image: '/images/project1.jpg' // Add image path
   },
   // Add more projects as needed
 ];
 
-const MatrixRain = () => {
-  useEffect(() => {
-    const canvas = document.getElementById('matrix-rain') as HTMLCanvasElement;
-    const context = canvas.getContext('2d');
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
-    const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const nums = '0123456789';
-    const alphabet = katakana + latin + nums;
-
-    const fontSize = 16;
-    const columns = canvas.width / fontSize;
-
-    const rainDrops = Array(Math.floor(columns)).fill(1);
-
-    const draw = () => {
-      if (context) {
-        context.fillStyle = 'rgba(0, 0, 0, 0.05)';
-        context.fillRect(0, 0, canvas.width, canvas.height);
-
-        context.fillStyle = '#0F0';
-        context.font = fontSize + 'px monospace';
-
-        for (let i = 0; i < rainDrops.length; i++) {
-          const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-          context.fillText(text, i * fontSize, rainDrops[i] * fontSize);
-
-          if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-            rainDrops[i] = 0;
-          }
-          rainDrops[i]++;
-        }
-      }
-    };
-
-    const interval = setInterval(draw, 30);
-
-    const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  return (
-    <div className="fixed inset-0 pointer-events-none z-0">
-      <canvas id="matrix-rain" className="w-full h-full"></canvas>
-    </div>
-  );
-};
-
-const TypewriterText = ({ text, speed = 50 }: { text: string; speed?: number }) => {
-  const [displayText, setDisplayText] = useState('');
-
-  useEffect(() => {
-    let i = 0;
-    const typingInterval = setInterval(() => {
-      if (i < text.length) {
-        setDisplayText((prev) => prev + text.charAt(i));
-        i++;
-      } else {
-        clearInterval(typingInterval);
-      }
-    }, speed);
-
-    return () => clearInterval(typingInterval);
-  }, [text, speed]);
-
-  return <span>{displayText}</span>;
-};
 
 const ProjectItem = ({ project, onSelect }: { project: any; onSelect: (project: any) => void }) => {
   return (
@@ -125,7 +52,7 @@ const ProjectItem = ({ project, onSelect }: { project: any; onSelect: (project: 
     >
       <div className="flex items-center text-green-400 hover:text-green-300">
         <FaFolder className="mr-2" />
-        <TypewriterText text={project.title} speed={30} />
+        <TypewriterText text={project.title} speed={30} cursor={false} />
       </div>
     </motion.div>
   );
@@ -143,48 +70,61 @@ const ProjectDetails = ({ project, onClose }: { project: any; onClose: () => voi
         <FaFolderOpen className="text-green-400 mr-2" />
         <h2 className="text-2xl text-green-400">{project.title}</h2>
       </div>
-      <TypewriterText text={project.description} speed={20} />
-      <div className="mt-4">
-        <p className="text-green-400">Category: {project.category}</p>
-      </div>
-      <div className="mt-4">
-        <p className="text-green-400">Tech Stack:</p>
-        <ul className="list-disc list-inside">
-          {project.techStack.map((tech: string, index: number) => (
-            <li key={index} className="text-green-300">
-              <TypewriterText text={tech} speed={40} />
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="mt-4 flex space-x-4">
-        {project.github && (
-          <a
-            href={project.github}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center text-green-400 hover:text-green-300"
+      <div className="flex flex-col md:flex-row">
+        <div className="md:w-1/2 mb-4 md:mb-0">
+          <Image
+            src={project.image}
+            alt={project.title}
+            width={500}
+            height={300}
+            className="rounded-lg"
+          />
+        </div>
+        <div className="md:w-1/2 md:pl-4">
+          <p>{project.description}</p>
+          <div className="mt-4">
+            <p className="text-green-400">Category: {project.category}</p>
+          </div>
+          <div className="mt-4">
+            <p className="text-green-400">Tech Stack:</p>
+            <ul className="list-disc list-inside">
+              {project.techStack.map((tech: string, index: number) => (
+                <li key={index} className="text-green-300">
+                  <TypewriterText text={tech} speed={40} cursor={false}/>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="mt-4 flex space-x-4">
+            {project.github && (
+              <a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center text-green-400 hover:text-green-300"
+              >
+                <FaGithub className="mr-2" /> GitHub
+              </a>
+            )}
+            {project.live && (
+              <a
+                href={project.live}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center text-green-400 hover:text-green-300"
+              >
+                <FaExternalLinkAlt className="mr-2" /> Live Demo
+              </a>
+            )}
+          </div>
+          <button
+            onClick={onClose}
+            className="mt-6 text-green-400 hover:text-green-300"
           >
-            <FaGithub className="mr-2" /> GitHub
-          </a>
-        )}
-        {project.live && (
-          <a
-            href={project.live}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center text-green-400 hover:text-green-300"
-          >
-            <FaExternalLinkAlt className="mr-2" /> Live Demo
-          </a>
-        )}
+            [Close]
+          </button>
+        </div>
       </div>
-      <button
-        onClick={onClose}
-        className="mt-6 text-green-400 hover:text-green-300"
-      >
-        [Close]
-      </button>
     </motion.div>
   );
 };
@@ -258,13 +198,13 @@ Skills: Machine Learning, Web Development, Quantum Computing
           className="text-4xl mb-8 flex items-center"
         >
           <FaTerminal className="mr-4" />
-          <TypewriterText text="// Matrix Console: Project Showcase" speed={50} />
+          <TypewriterText text="// Matrix Console: Project Showcase" speed={50} cursor={false} />
         </motion.h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
             <h2 className="text-2xl mb-4 flex items-center">
               <FaCode className="mr-2" />
-              <TypewriterText text="$ ls projects/" speed={50} />
+              <TypewriterText text="$ ls projects/" speed={50} cursor={false}/>
             </h2>
             <AnimatePresence>
               {projects.map((project) => (
@@ -279,7 +219,7 @@ Skills: Machine Learning, Web Development, Quantum Computing
           <div>
             <h2 className="text-2xl mb-4 flex items-center">
               <FaBrain className="mr-2" />
-              <TypewriterText text="$ cat project_details.txt" speed={50} />
+              <TypewriterText text="$ cat project_details.txt" speed={50} cursor={false}/>
             </h2>
             <AnimatePresence>
               {selectedProject && (
