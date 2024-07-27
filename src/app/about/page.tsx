@@ -100,7 +100,7 @@ const About: React.FC = () => {
               transition={{ delay: 0.5, duration: 0.5 }}
             >
               <p className="text-sm">
-                Welcome to my AI Universe! I'm passionate about exploring the frontiers of artificial intelligence and creating innovative solutions that push the boundaries of what's possible.
+                Welcome to my AI Universe! I&apos;m passionate about exploring the frontiers of artificial intelligence and creating innovative solutions that push the boundaries of what&apos;s possible.
               </p>
             </motion.div>
           </motion.div>
@@ -129,10 +129,10 @@ const About: React.FC = () => {
           className="text-center mt-12"
         >
           <h2 className="text-2xl font-bold mb-4 text-green-400">
-            Let's Connect
+            Let&apos;s Connect
           </h2>
           <p className="text-md mb-6 max-w-2xl mx-auto text-green-300">
-            I'm always excited to collaborate on innovative AI projects and explore new frontiers in technology. Whether you're a fellow enthusiast, a potential collaborator, or just curious about AI, I'd love to hear from you!
+            I&apos;m always excited to collaborate on innovative AI projects and explore new frontiers in technology. Whether you&apos;re a fellow enthusiast, a potential collaborator, or just curious about AI, I&apos;d love to hear from you!
           </p>
           <motion.a
             href="/contact"
