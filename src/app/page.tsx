@@ -1,10 +1,10 @@
 "use client"
-
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { FaEnvelope, FaEye, FaGithub, FaLinkedin, FaRobot, FaBrain, FaCode } from 'react-icons/fa';
 import { TypewriterText, MatrixRain, FloatingIcon } from '@/components/UIComponents';
+import Terminal from '@/components/Terminal';
 
 const Home: React.FC = () => {
   return (
@@ -17,10 +17,10 @@ const Home: React.FC = () => {
           transition={{ duration: 0.5 }}
           className="text-center mb-16"
         >
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 text-green-400">
+          <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold mb-6 text-green-400">
             <TypewriterText text="Welcome to My AI Universe" />
           </h1>
-          <p className="text-xl md:text-2xl mb-8 text-green-300">
+          <p className="text-lg sm:text-xl md:text-2xl mb-8 text-green-300">
             <TypewriterText text="Hi, I'm Younes Kazemi." speed={50} />
           </p>
           <motion.div 
@@ -37,6 +37,15 @@ const Home: React.FC = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.5 }}
+          className="mb-16"
+        >
+          <Terminal />
+        </motion.section>
+
+        <motion.section 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.9, duration: 0.5 }}
           className="flex flex-wrap justify-center gap-4"
         >
           <Link href="/portfolio" passHref legacyBehavior>
@@ -64,10 +73,10 @@ const Home: React.FC = () => {
         <motion.section 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9, duration: 0.5 }}
+          transition={{ delay: 1.2, duration: 0.5 }}
           className="mt-16 text-center"
         >
-          <h2 className="text-2xl mb-4 text-green-300">Join My AI Network</h2>
+          <h2 className="text-xl sm:text-2xl mb-4 text-green-300">Join My AI Network</h2>
           <div className="flex justify-center space-x-4">
             <motion.a 
               href="https://github.com/yourusername" 

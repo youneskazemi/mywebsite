@@ -116,4 +116,20 @@
   .text-shadow {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
   }
+
+  .matrix-effect {
+    animation: matrix-rain 5s linear;
+  }
+}
+
+@keyframes matrix-rain {
+  0% {
+    background-color: rgba(0, 255, 0, 0.1);
+  }
+  50% {
+    background-color: rgba(0, 255, 0, 0.2);
+  }
+  100% {
+    background-color: rgba(0, 0, 0, 1);
+  }
 }

@@ -1,5 +1,5 @@
 // components/UIComponents.tsx
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Typewriter } from 'react-simple-typewriter';
 
@@ -18,12 +18,32 @@ export const TypewriterText: React.FC<{ text: string, speed?: number, cursor?: b
 };
 
 export const MatrixRain: React.FC = () => {
-  useEffect(() => {
-    const canvas = document.getElementById('matrix-rain') as HTMLCanvasElement;
-    const context = canvas.getContext('2d');
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+  useEffect(() => {
+    const updateDimensions = () => {
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    window.addEventListener('resize', updateDimensions);
+    updateDimensions();
+
+    return () => window.removeEventListener('resize', updateDimensions);
+  }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const context = canvas.getContext('2d');
+    if (!context) return;
+
+    canvas.width = dimensions.width;
+    canvas.height = dimensions.height;
 
     const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
     const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -36,41 +56,29 @@ export const MatrixRain: React.FC = () => {
     const rainDrops = Array(Math.floor(columns)).fill(1);
 
     const draw = () => {
-      if (context) {
-        context.fillStyle = 'rgba(0, 0, 0, 0.05)';
-        context.fillRect(0, 0, canvas.width, canvas.height);
+      context.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      context.fillRect(0, 0, canvas.width, canvas.height);
 
-        context.fillStyle = '#0F0';
-        context.font = fontSize + 'px monospace';
+      context.fillStyle = '#0F0';
+      context.font = fontSize + 'px monospace';
 
-        for (let i = 0; i < rainDrops.length; i++) {
-          const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
-          context.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+      for (let i = 0; i < rainDrops.length; i++) {
+        const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+        context.fillText(text, i * fontSize, rainDrops[i] * fontSize);
 
-          if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-            rainDrops[i] = 0;
-          }
-          rainDrops[i]++;
+        if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          rainDrops[i] = 0;
         }
+        rainDrops[i]++;
       }
     };
 
     const interval = setInterval(draw, 30);
 
-    const handleResize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
+    return () => clearInterval(interval);
+  }, [dimensions]);
 
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      clearInterval(interval);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  return <canvas id="matrix-rain" className="fixed inset-0 z-0" />;
+  return <canvas ref={canvasRef} className="fixed inset-0 z-0" />;
 };
 
 export const FloatingIcon: React.FC<{ icon: React.ElementType; delay: number }> = ({ icon: Icon, delay }) => (
