@@ -4,7 +4,6 @@ import { ThemeProvider } from 'next-themes';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { motion } from 'framer-motion';
-import { MatrixRain } from '@/components/UIComponents';
 
 interface LayoutProps {
   children: ReactNode;

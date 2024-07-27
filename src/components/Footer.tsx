@@ -10,9 +10,9 @@ const Footer: React.FC<FooterProps> = ({ className = '' }) => {
   const currentYear = new Date().getFullYear();
 
   const socialLinks = [
-    { icon: FaGithub, href: "https://github.com/yourusername", name: "GitHub" },
-    { icon: FaLinkedin, href: "https://linkedin.com/in/yourusername", name: "LinkedIn" },
-    { icon: FaTwitter, href: "https://twitter.com/yourusername", name: "Twitter" },
+    { icon: FaGithub, href: "https://github.com/youneskazemi", name: "GitHub" },
+    { icon: FaLinkedin, href: "https://www.linkedin.com/in/younes-kazemi-9018a9b8/", name: "LinkedIn" },
+    { icon: FaTwitter, href: "https://twitter.com/", name: "Twitter" },
   ];
 
   return (

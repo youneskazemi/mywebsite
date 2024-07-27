@@ -58,8 +58,8 @@ const Terminal: React.FC = () => {
         case 'contact':
           newOutput.push(
             <span key={output.length + 1}>
-              Email: younes@example.com<br/>
-              LinkedIn: linkedin.com/in/youneskazemi<br/>
+              Email: youneskazemi9798@gmail.com<br/>
+              LinkedIn: linkedin.com/in/younes-kazemi-9018a9b8<br/>
               GitHub: github.com/youneskazemi
             </span>
           );

@@ -79,7 +79,7 @@ const Home: React.FC = () => {
           <h2 className="text-xl sm:text-2xl mb-4 text-green-300">Join My AI Network</h2>
           <div className="flex justify-center space-x-4">
             <motion.a 
-              href="https://github.com/yourusername" 
+              href="https://github.com/youneskazemi" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="text-green-400 hover:text-green-300"
@@ -89,7 +89,7 @@ const Home: React.FC = () => {
               <FaGithub size={32} />
             </motion.a>
             <motion.a 
-              href="https://linkedin.com/in/yourusername" 
+              href="https://www.linkedin.com/in/younes-kazemi-9018a9b8/" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="text-green-400 hover:text-green-300"
