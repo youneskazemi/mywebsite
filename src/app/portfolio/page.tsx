@@ -1,191 +1,214 @@
 "use client"
-import React, { useState, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaFolder, FaFolderOpen, FaGithub, FaExternalLinkAlt, FaTerminal, FaCode, FaBrain } from 'react-icons/fa';
+import { FaFolder, FaFolderOpen, FaGithub, FaExternalLinkAlt, FaCode, FaBrain, FaRobot, FaSpinner, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { MatrixRain, TypewriterText } from '@/components/UIComponents';
-import Image from 'next/image';
-
-const projects = [
-  {
-    id: 1,
-    title: 'Neural Network Visualizer',
-    description: 'Interactive 3D visualization of neural network architectures',
-    category: 'AI',
-    github: 'https://github.com/yourusername/neural-network-visualizer',
-    live: 'https://neural-network-viz.demo',
-    techStack: ['React', 'Three.js', 'TensorFlow.js'],
-    image: '/images/project1.jpg' // Add image path
-  },
-  {
-    id: 2,
-    title: 'Quantum Algorithm Simulator',
-    description: 'Simulation platform for quantum computing algorithms',
-    category: 'Quantum Computing',
-    github: 'https://github.com/yourusername/quantum-sim',
-    techStack: ['Python', 'Qiskit', 'NumPy'],
-    image: '/images/project2.jpg' // Add image path
-  },
-  {
-    id: 3,
-    title: 'AI-Powered Code Refactorer',
-    description: 'Automated code improvement using machine learning',
-    category: 'AI',
-    github: 'https://github.com/yourusername/ai-refactor',
-    live: 'https://ai-refactor.demo',
-    techStack: ['Python', 'TensorFlow', 'NLTK'],
-    image: '/images/project1.jpg' // Add image path
-  },
-  // Add more projects as needed
-];
 
 
+interface GitHubRepo {
+  id: number;
+  name: string;
+  description: string;
+  html_url: string;
+  homepage: string | null;
+  topics: string[];
+  language: string;
+  stargazers_count: number;
+  forks_count: number;
+}
 
-const ProjectItem = ({ project, onSelect }: { project: any; onSelect: (project: any) => void }) => {
-  return (
-    <motion.div
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: 20 }}
-      whileHover={{ scale: 1.05 }}
-      className="mb-4 cursor-pointer"
-      onClick={() => onSelect(project)}
-    >
-      <div className="flex items-center text-green-400 hover:text-green-300">
-        <FaFolder className="mr-2" />
-        <TypewriterText text={project.title} speed={30} cursor={false} />
-      </div>
-    </motion.div>
-  );
-};
-
-const ProjectDetails = ({ project, onClose }: { project: any; onClose: () => void }) => {
+const ProjectItem: React.FC<{ project: GitHubRepo; onSelect: (project: GitHubRepo) => void }> = ({ project, onSelect }) => {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className="bg-black bg-opacity-75 p-6 rounded-lg border border-green-500"
+      whileHover={{ scale: 1.05 }}
+      className="mb-4 cursor-pointer bg-gray-800 rounded-lg p-4 hover:bg-gray-700 transition-all duration-300"
+      onClick={() => onSelect(project)}
     >
-      <div className="flex items-center mb-4">
-        <FaFolderOpen className="text-green-400 mr-2" />
-        <h2 className="text-2xl text-green-400">{project.title}</h2>
+      <div className="flex items-center text-green-400 mb-2">
+        <FaFolder className="mr-2" />
+        <h3 className="text-lg font-semibold">{project.name}</h3>
       </div>
-      <div className="flex flex-col md:flex-row">
-        <div className="md:w-1/2 mb-4 md:mb-0">
-          <Image
-            src={project.image}
-            alt={project.title}
-            width={500}
-            height={300}
-            className="rounded-lg"
-          />
+      <p className="text-gray-300 text-sm h-12 overflow-hidden">{project.description || 'No description available'}</p>
+      <div className="mt-2 flex flex-wrap gap-2">
+        {project.topics.slice(0, 3).map((topic, index) => (
+          <span key={index} className="text-xs bg-gray-700 text-green-300 px-2 py-1 rounded-full">
+            {topic}
+          </span>
+        ))}
+        {project.topics.length > 3 && (
+          <span className="text-xs bg-gray-700 text-green-300 px-2 py-1 rounded-full">
+            +{project.topics.length - 3}
+          </span>
+        )}
+      </div>
+    </motion.div>
+  );
+};
+
+const ProjectDetails: React.FC<{ project: GitHubRepo; onClose: () => void }> = ({ project, onClose }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      className="bg-gray-800 p-6 rounded-lg border border-green-500"
+    >
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-2xl text-green-400 flex items-center">
+          <FaFolderOpen className="mr-2" />
+          {project.name}
+        </h2>
+        <button
+          onClick={onClose}
+          className="text-green-400 hover:text-green-300"
+        >
+          [Close]
+        </button>
+      </div>
+      <div className="flex flex-col">
+        <p className="text-gray-300 mb-4">{project.description || 'No description available'}</p>
+        <div className="mb-4">
+          <p className="text-green-400 mb-2">Topics:</p>
+          <div className="flex flex-wrap gap-2">
+            {project.topics.map((topic, index) => (
+              <span key={index} className="text-sm bg-gray-700 text-green-300 px-2 py-1 rounded-full">
+                {topic}
+              </span>
+            ))}
+          </div>
         </div>
-        <div className="md:w-1/2 md:pl-4">
-          <p>{project.description}</p>
-          <div className="mt-4">
-            <p className="text-green-400">Category: {project.category}</p>
-          </div>
-          <div className="mt-4">
-            <p className="text-green-400">Tech Stack:</p>
-            <ul className="list-disc list-inside">
-              {project.techStack.map((tech: string, index: number) => (
-                <li key={index} className="text-green-300">
-                  <TypewriterText text={tech} speed={40} cursor={false}/>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="mt-4 flex space-x-4">
-            {project.github && (
-              <a
-                href={project.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center text-green-400 hover:text-green-300"
-              >
-                <FaGithub className="mr-2" /> GitHub
-              </a>
-            )}
-            {project.live && (
-              <a
-                href={project.live}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center text-green-400 hover:text-green-300"
-              >
-                <FaExternalLinkAlt className="mr-2" /> Live Demo
-              </a>
-            )}
-          </div>
-          <button
-            onClick={onClose}
-            className="mt-6 text-green-400 hover:text-green-300"
+        <div className="flex items-center space-x-4 mb-4">
+          <span className="text-gray-300">
+            <FaCode className="inline mr-1" /> {project.language || 'N/A'}
+          </span>
+          <span className="text-gray-300">
+            <FaGithub className="inline mr-1" /> Stars: {project.stargazers_count}
+          </span>
+          <span className="text-gray-300">
+            <FaGithub className="inline mr-1" /> Forks: {project.forks_count}
+          </span>
+        </div>
+        <div className="flex space-x-4">
+          <a
+            href={project.html_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center bg-green-600 text-black px-4 py-2 rounded-full hover:bg-green-500 transition duration-300"
           >
-            [Close]
-          </button>
+            <FaGithub className="mr-2" /> GitHub
+          </a>
+          {project.homepage && (
+            <a
+              href={project.homepage}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center bg-blue-600 text-black px-4 py-2 rounded-full hover:bg-blue-500 transition duration-300"
+            >
+              <FaExternalLinkAlt className="mr-2" /> Live Demo
+            </a>
+          )}
         </div>
       </div>
     </motion.div>
   );
 };
 
-const CommandPrompt = ({ onCommand }: { onCommand: (command: string) => void }) => {
-  const [input, setInput] = useState('');
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onCommand(input);
-    setInput('');
-  };
+const Pagination: React.FC<{ currentPage: number; totalPages: number; onPageChange: (page: number) => void }> = ({ currentPage, totalPages, onPageChange }) => {
+  const pageNumbers = [];
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === 1 || i === totalPages || (i >= currentPage - 1 && i <= currentPage + 1)) {
+      pageNumbers.push(i);
+    } else if (i === currentPage - 2 || i === currentPage + 2) {
+      pageNumbers.push('...');
+    }
+  }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-8">
-      <div className="flex items-center">
-        <span className="text-green-400 mr-2">$</span>
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          className="bg-transparent border-none outline-none text-green-400 flex-grow"
-          placeholder="Type a command..."
-        />
-      </div>
-    </form>
+    <div className="flex justify-center items-center mt-8 space-x-2">
+      <AnimatePresence mode="wait">
+        <motion.button
+          key="prev"
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="px-3 py-2 bg-gray-800 text-green-400 rounded-md disabled:opacity-50 hover:bg-gray-700 transition-colors duration-300"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+        >
+          <FaChevronLeft />
+        </motion.button>
+        {pageNumbers.map((number, index) => (
+          <motion.button
+            key={index}
+            onClick={() => typeof number === 'number' && onPageChange(number)}
+            className={`px-4 py-2 rounded-md transition-colors duration-300 ${
+              number === currentPage
+                ? 'bg-green-600 text-black'
+                : 'bg-gray-800 text-green-400 hover:bg-gray-700'
+            }`}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.2 }}
+          >
+            {number}
+          </motion.button>
+        ))}
+        <motion.button
+          key="next"
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          className="px-3 py-2 bg-gray-800 text-green-400 rounded-md disabled:opacity-50 hover:bg-gray-700 transition-colors duration-300"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+        >
+          <FaChevronRight />
+        </motion.button>
+      </AnimatePresence>
+    </div>
   );
 };
 
-const Portfolio = () => {
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [commandOutput, setCommandOutput] = useState('');
+const Portfolio: React.FC = () => {
+  const [projects, setProjects] = useState<GitHubRepo[]>([]);
+  const [selectedProject, setSelectedProject] = useState<GitHubRepo | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const projectsPerPage = 3;
 
-  const handleCommand = useCallback((command: string) => {
-    switch (command.toLowerCase()) {
-      case 'help':
-        setCommandOutput(`
-Available commands:
-- help: Show this help message
-- ls: List all projects
-- clear: Clear the command output
-- about: Show information about me
-        `);
-        break;
-      case 'ls':
-        setCommandOutput(projects.map(p => p.title).join('\n'));
-        break;
-      case 'clear':
-        setCommandOutput('');
-        break;
-      case 'about':
-        setCommandOutput(`
-Name: Younes Kazemi
-Role: AI Engineer & Full Stack Developer
-Skills: Machine Learning, Web Development, Quantum Computing
-        `);
-        break;
-      default:
-        setCommandOutput(`Command not found: ${command}. Type 'help' for available commands.`);
-    }
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const response = await fetch('https://api.github.com/users/youneskazemi/repos?sort=updated&direction=desc');
+        if (!response.ok) {
+          throw new Error('Failed to fetch repositories');
+        }
+        const data: GitHubRepo[] = await response.json();
+        setProjects(data);
+        setLoading(false);
+      } catch (error) {
+        setError(error instanceof Error ? error.message : 'An unknown error occurred');
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
   }, []);
+
+  const indexOfLastProject = currentPage * projectsPerPage;
+  const indexOfFirstProject = indexOfLastProject - projectsPerPage;
+  const currentProjects = projects.slice(indexOfFirstProject, indexOfLastProject);
+  const totalPages = Math.ceil(projects.length / projectsPerPage);
+
+  const handlePageChange = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+    setSelectedProject(null); // Reset selected project when changing pages
+  };
 
   return (
     <div className="min-h-screen bg-black text-green-400 font-mono relative overflow-hidden">
@@ -195,44 +218,65 @@ Skills: Machine Learning, Web Development, Quantum Computing
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-4xl mb-8 flex items-center"
+          className="text-4xl mb-12 flex items-center justify-center"
         >
-          <FaTerminal className="mr-4" />
-          <TypewriterText text="// Matrix Console: Project Showcase" speed={50} cursor={false} />
+          <FaRobot className="mr-4 text-5xl" />
+          <TypewriterText text="AI Universe: GitHub Showcase" speed={50} cursor={false} />
         </motion.h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div>
-            <h2 className="text-2xl mb-4 flex items-center">
-              <FaCode className="mr-2" />
-              <TypewriterText text="$ ls projects/" speed={50} cursor={false}/>
-            </h2>
-            <AnimatePresence>
-              {projects.map((project) => (
-                <ProjectItem
-                  key={project.id}
-                  project={project}
-                  onSelect={setSelectedProject}
-                />
-              ))}
-            </AnimatePresence>
+        
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <FaSpinner className="animate-spin text-4xl text-green-400" />
           </div>
-          <div>
-            <h2 className="text-2xl mb-4 flex items-center">
-              <FaBrain className="mr-2" />
-              <TypewriterText text="$ cat project_details.txt" speed={50} cursor={false}/>
-            </h2>
-            <AnimatePresence>
-              {selectedProject && (
-                <ProjectDetails
-                  project={selectedProject}
-                  onClose={() => setSelectedProject(null)}
-                />
-              )}
-            </AnimatePresence>
+        ) : error ? (
+          <div className="text-red-500 text-center">{error}</div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            <div>
+              <h2 className="text-2xl mb-4 flex items-center">
+                <FaCode className="mr-2" />
+                <TypewriterText text="GitHub Projects" speed={50} cursor={false}/>
+              </h2>
+              <AnimatePresence mode="wait">
+                {currentProjects.map((project) => (
+                  <ProjectItem
+                    key={project.id}
+                    project={project}
+                    onSelect={setSelectedProject}
+                  />
+                ))}
+              </AnimatePresence>
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={handlePageChange}
+              />
+            </div>
+            <div>
+              <h2 className="text-2xl mb-4 flex items-center">
+                <FaBrain className="mr-2" />
+                <TypewriterText text="Project Details" speed={50} cursor={false}/>
+              </h2>
+              <AnimatePresence mode="wait">
+                {selectedProject ? (
+                  <ProjectDetails
+                    project={selectedProject}
+                    onClose={() => setSelectedProject(null)}
+                  />
+                ) : (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="bg-gray-800 p-6 rounded-lg border border-green-500 text-center"
+                  >
+                    <p>Select a project to view details</p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
-        </div>
-        <CommandPrompt onCommand={handleCommand} />
-        <pre className="mt-4 text-green-300">{commandOutput}</pre>
+        )}
       </div>
     </div>
   );
