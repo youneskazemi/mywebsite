@@ -6,7 +6,17 @@ import Link from 'next/link';
 const Terminal: React.FC = () => {
   const [input, setInput] = useState('');
   const [output, setOutput] = useState<JSX.Element[]>([<span key="welcome">Welcome to AI Universe. Type "help" for available commands.</span>]);
+  const outputRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    scrollToBottom();
+  }, [output]);
+
+  const scrollToBottom = () => {
+    if (outputRef.current) {
+      outputRef.current.scrollTop = outputRef.current.scrollHeight;
+    }
+  };
 
   const handleCommand = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -21,10 +31,7 @@ const Terminal: React.FC = () => {
               - skills: View my technical skills<br/>
               - projects: Check out my AI projects<br/>
               - contact: Get my contact information<br/>
-              - joke: Hear an AI-related joke<br/>
-              - quote: Get an inspiring tech quote<br/>
-              - clear: Clear the terminal<br/>
-              - exit: Close the terminal (just kidding, you can't escape)
+              - clear: Clear the terminal
             </span>
           );
           break;
@@ -64,31 +71,8 @@ const Terminal: React.FC = () => {
             </span>
           );
           break;
-        case 'joke':
-          const jokes = [
-            "Why did the AI cross the road? To get to the other dataset!",
-            "How does an AI take its coffee? With a byte of sugar!",
-            "What do you call an AI that sings? Artificial Intelligentune!",
-            "Why was the computer cold? It left its Windows open!",
-            "How does a computer scientist make tea? It uses algo-rhythm!"
-          ];
-          newOutput.push(<span key={output.length + 1}>{jokes[Math.floor(Math.random() * jokes.length)]}</span>);
-          break;
-        case 'quote':
-          const quotes = [
-            "The computer was born to solve problems that did not exist before. - Bill Gates",
-            "The science of today is the technology of tomorrow. - Edward Teller",
-            "Technology is best when it brings people together. - Matt Mullenweg",
-            "The advance of technology is based on making it fit in so that you don't really even notice it, so it's part of everyday life. - Bill Gates",
-            "The only way to predict the future is to have power to shape the future. - Eric Hoffer"
-          ];
-          newOutput.push(<span key={output.length + 1}>{quotes[Math.floor(Math.random() * quotes.length)]}</span>);
-          break;
         case 'clear':
           newOutput.length = 0;
-          break;
-        case 'exit':
-          newOutput.push(<span key={output.length + 1}>Nice try, but there's no escaping the AI Universe! 😉</span>);
           break;
         default:
           newOutput.push(<span key={output.length + 1}>{`Command not recognized: ${input}. Type 'help' for available commands.`}</span>);
@@ -117,7 +101,10 @@ const Terminal: React.FC = () => {
           <span className="text-sm font-semibold">AI Universe Terminal</span>
         </div>
       </div>
-      <div className="h-64 overflow-y-auto p-4 font-mono text-sm">
+      <div 
+        ref={outputRef} 
+        className="h-64 overflow-y-auto p-4 font-mono text-sm custom-scrollbar"
+      >
         <AnimatePresence>
           {output.map((line, index) => (
             <motion.div

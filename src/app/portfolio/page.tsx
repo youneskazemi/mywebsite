@@ -177,7 +177,7 @@ Available commands:
         break;
       case 'about':
         setCommandOutput(`
-Name: [Your Name]
+Name: Younes Kazemi
 Role: AI Engineer & Full Stack Developer
 Skills: Machine Learning, Web Development, Quantum Computing
         `);

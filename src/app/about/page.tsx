@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { FaJs, FaPython, FaReact, FaNodeJs, FaBrain, FaChartBar, FaRobot, FaEnvelope } from 'react-icons/fa';
 import { TypewriterText, MatrixRain, FloatingIcon } from '@/components/UIComponents';
+import Link from 'next/link';
 
 const SkillCard: React.FC<{ icon: React.ElementType; name: string; description: string }> = ({ icon: Icon, name, description }) => {
   const [isHovered, setIsHovered] = useState(false);
@@ -134,8 +135,8 @@ const About: React.FC = () => {
           <p className="text-md mb-6 max-w-2xl mx-auto text-green-300">
             I&apos;m always excited to collaborate on innovative AI projects and explore new frontiers in technology. Whether you&apos;re a fellow enthusiast, a potential collaborator, or just curious about AI, I&apos;d love to hear from you!
           </p>
+          <Link href="/contact" passHref legacyBehavior>
           <motion.a
-            href="/contact"
             whileHover={{ scale: 1.05, boxShadow: "0 0 15px rgba(0, 255, 0, 0.5)" }}
             whileTap={{ scale: 0.95 }}
             className="inline-flex items-center px-6 py-2 bg-green-600 text-black rounded-full hover:bg-green-700 transition duration-300"
@@ -143,6 +144,7 @@ const About: React.FC = () => {
             <FaEnvelope className="mr-2" />
             Get in Touch
           </motion.a>
+          </Link>
         </motion.section>
       </main>
       <div className="fixed inset-0 pointer-events-none">

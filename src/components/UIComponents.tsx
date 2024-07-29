@@ -1,4 +1,3 @@
-// components/UIComponents.tsx
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Typewriter } from 'react-simple-typewriter';
@@ -7,7 +6,7 @@ export const TypewriterText: React.FC<{ text: string, speed?: number, cursor?: b
   return (
     <Typewriter
       words={[text]}
-      loop={1} // Set to 0 for infinite loop
+      loop={1}
       cursor={cursor}
       cursorStyle='_'
       typeSpeed={speed}
@@ -53,44 +52,44 @@ export const MatrixRain: React.FC = () => {
     const fontSize = 16;
     const columns = canvas.width / fontSize;
 
-    const rainDrops = Array(Math.floor(columns)).fill(1);
+    const rainDrops = Array(Math.floor(columns)).fill(canvas.height);
 
     const draw = () => {
       context.fillStyle = 'rgba(0, 0, 0, 0.05)';
       context.fillRect(0, 0, canvas.width, canvas.height);
 
-      context.fillStyle = '#0F0';
+      context.fillStyle = 'rgba(0, 255, 0, 0.35)';
       context.font = fontSize + 'px monospace';
 
       for (let i = 0; i < rainDrops.length; i++) {
         const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
         context.fillText(text, i * fontSize, rainDrops[i] * fontSize);
 
-        if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.985) {
           rainDrops[i] = 0;
         }
         rainDrops[i]++;
       }
     };
 
-    const interval = setInterval(draw, 30);
+    const interval = setInterval(draw, 40);
 
     return () => clearInterval(interval);
   }, [dimensions]);
 
-  return <canvas ref={canvasRef} className="fixed inset-0 z-0" />;
+  return <canvas ref={canvasRef} className="fixed inset-0 z-0 opacity-60" />;
 };
 
 export const FloatingIcon: React.FC<{ icon: React.ElementType; delay: number }> = ({ icon: Icon, delay }) => (
   <motion.div
-    className="absolute text-green-400 opacity-50"
+    className="absolute text-green-400 opacity-60"
     animate={{
       y: ["0%", "100%"],
-      opacity: [0.5, 1, 0.5],
-      scale: [1, 1.2, 1],
+      opacity: [0.4, 0.6, 0.4],
+      scale: [1, 1.1, 1],
     }}
     transition={{
-      duration: 5,
+      duration: 7,
       repeat: Infinity,
       repeatType: "reverse",
       delay,
@@ -100,6 +99,6 @@ export const FloatingIcon: React.FC<{ icon: React.ElementType; delay: number }> 
       top: `${Math.random() * 100}%`,
     }}
   >
-    <Icon size={24} />
+    <Icon size={22} />
   </motion.div>
 );
