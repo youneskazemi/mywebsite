@@ -1,7 +1,7 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaFolder, FaFolderOpen, FaGithub, FaExternalLinkAlt, FaCode, FaBrain, FaRobot, FaSpinner, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
+import { FaSearch ,FaFolder, FaFolderOpen, FaGithub, FaExternalLinkAlt, FaCode, FaBrain, FaRobot, FaSpinner, FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { MatrixRain, TypewriterText } from '@/components/UIComponents';
 
 
@@ -175,10 +175,12 @@ const Pagination: React.FC<{ currentPage: number; totalPages: number; onPageChan
 
 const Portfolio: React.FC = () => {
   const [projects, setProjects] = useState<GitHubRepo[]>([]);
+  const [filteredProjects, setFilteredProjects] = useState<GitHubRepo[]>([]);
   const [selectedProject, setSelectedProject] = useState<GitHubRepo | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
   const projectsPerPage = 3;
 
   useEffect(() => {
@@ -190,6 +192,7 @@ const Portfolio: React.FC = () => {
         }
         const data: GitHubRepo[] = await response.json();
         setProjects(data);
+        setFilteredProjects(data);
         setLoading(false);
       } catch (error) {
         setError(error instanceof Error ? error.message : 'An unknown error occurred');
@@ -200,14 +203,29 @@ const Portfolio: React.FC = () => {
     fetchProjects();
   }, []);
 
+  useEffect(() => {
+    const results = projects.filter(project =>
+      project.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (project.description && project.description.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      project.topics.some(topic => topic.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+    setFilteredProjects(results);
+    setCurrentPage(1);
+    setSelectedProject(null);
+  }, [searchTerm, projects]);
+
   const indexOfLastProject = currentPage * projectsPerPage;
   const indexOfFirstProject = indexOfLastProject - projectsPerPage;
-  const currentProjects = projects.slice(indexOfFirstProject, indexOfLastProject);
-  const totalPages = Math.ceil(projects.length / projectsPerPage);
+  const currentProjects = filteredProjects.slice(indexOfFirstProject, indexOfLastProject);
+  const totalPages = Math.ceil(filteredProjects.length / projectsPerPage);
 
   const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
-    setSelectedProject(null); // Reset selected project when changing pages
+    setSelectedProject(null);
+  };
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
   };
 
   return (
@@ -224,6 +242,24 @@ const Portfolio: React.FC = () => {
           <TypewriterText text="AI Universe: GitHub Showcase" speed={50} cursor={false} />
         </motion.h1>
         
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mb-8"
+        >
+          <div className="relative max-w-md mx-auto">
+            <input
+              type="text"
+              placeholder="Search projects..."
+              value={searchTerm}
+              onChange={handleSearch}
+              className="w-full px-4 py-2 bg-gray-800 text-green-400 rounded-full border border-green-500 focus:outline-none focus:ring-2 focus:ring-green-400 transition-all duration-300"
+            />
+            <FaSearch className="absolute right-3 top-1/2 transform -translate-y-1/2 text-green-500" />
+          </div>
+        </motion.div>
+
         {loading ? (
           <div className="flex justify-center items-center h-64">
             <FaSpinner className="animate-spin text-4xl text-green-400" />
@@ -238,19 +274,32 @@ const Portfolio: React.FC = () => {
                 <TypewriterText text="GitHub Projects" speed={50} cursor={false}/>
               </h2>
               <AnimatePresence mode="wait">
-                {currentProjects.map((project) => (
-                  <ProjectItem
-                    key={project.id}
-                    project={project}
-                    onSelect={setSelectedProject}
-                  />
-                ))}
+                {currentProjects.length > 0 ? (
+                  currentProjects.map((project) => (
+                    <ProjectItem
+                      key={project.id}
+                      project={project}
+                      onSelect={setSelectedProject}
+                    />
+                  ))
+                ) : (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="text-center text-gray-400 mt-8"
+                  >
+                    No projects found matching your search.
+                  </motion.div>
+                )}
               </AnimatePresence>
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={handlePageChange}
-              />
+              {filteredProjects.length > projectsPerPage && (
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={handlePageChange}
+                />
+              )}
             </div>
             <div>
               <h2 className="text-2xl mb-4 flex items-center">
